@@ -18,6 +18,8 @@ public class MainActivity extends Activity {
     private TextView mQuestionTextView;
     private static final String TAG = "QuizActivity";
 
+    private static final String KEY_INDEX = "index";
+
     private TrueFalse[] mQuestionBank = new TrueFalse[] {
             new TrueFalse(R.string.question_oceans, true),
             new TrueFalse(R.string.question_mideast, false),
@@ -71,12 +73,22 @@ public class MainActivity extends Activity {
             }
         });
 
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
         updateQuestion();
     }
 
     private void updateQuestion() {
         int question = mQuestionBank[mCurrentIndex].getmQuestion();
         mQuestionTextView.setText(question);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
     private void checkAnswer(boolean userPressedTrue) {
